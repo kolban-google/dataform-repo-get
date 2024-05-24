@@ -1,3 +1,18 @@
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.google.srtt.dataform.repo_get;
 
 import com.google.cloud.dataform.v1beta1.*;
@@ -20,6 +35,7 @@ public class Main {
   private String location;
   private String repository;
   private String workspace;
+  private String outputDirectory;
   private DataformClient dataformClient;
 
   /**
@@ -49,7 +65,7 @@ public class Main {
       .build();
     ReadFileResponse response = dataformClient.readFile(fileRequest);
     String content = response.getFileContents().toStringUtf8();
-    File file = new File("out", fileName);
+    File file = new File(outputDirectory, fileName);
     FileUtils.writeByteArrayToFile(file, response.getFileContents().toByteArray());
     //System.out.println(content);
   } // processFile
@@ -129,11 +145,20 @@ public class Main {
         .required()
         .build();
 
+      Option outputOption = Option.builder()
+        .longOpt("output")
+        .argName("output")
+        .hasArg()
+        .desc("The output directory")
+        .required(false)
+        .build();
+
       Options options = new Options();
       options.addOption(projectOption);
       options.addOption(locationOption);
       options.addOption(repositoryOption);
       options.addOption(workspaceOption);
+      options.addOption(outputOption);
       CommandLineParser parser = new DefaultParser();
       CommandLine line = parser.parse(options, args);
 
@@ -141,6 +166,7 @@ public class Main {
       location = line.getOptionValue(locationOption);
       repository = line.getOptionValue(repositoryOption);
       workspace = line.getOptionValue(workspaceOption);
+      outputDirectory = line.getOptionValue(outputOption, "out");
 
       //System.out.println("Created the Dataform client");
       processDirectory("");

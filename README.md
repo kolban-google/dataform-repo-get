@@ -12,6 +12,7 @@ The parameter to the utility are:
 * `--location` - The identity of the location (region) where Dataform is configured.
 * `--repository` - The identity of the Dataform repository.
 * `--workspace` - The identity of the workspace in the Dataform repository.
+* `--output` - (**optional**) The output directory.  Defaults to `out`.
 
 For example:
 

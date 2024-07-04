@@ -12,7 +12,7 @@ The parameter to the utility are:
 * `--location` - The identity of the location (region) where Dataform is configured.
 * `--repository` - The identity of the Dataform repository.
 * `--workspace` - The identity of the workspace in the Dataform repository.
-* `--output` - (**optional**) The output directory.  Defaults to `out`.
+* `--output` - (**optional**) The output directory.  Defaults to `out`.x
 
 For example:
 
@@ -23,8 +23,21 @@ For example:
   --workspace <MyWorkspace>
 ```
 
+## Building
+The utility is provided in source and leverages Maven for build.  It was tested again Java 17.
+
+```bash
+mvn package
+```
+
+### Run the utility
+
+```bash
+mvn exec:java -Dexec.mainClass=com.google.srtt.dataform.repo_get.Main -Dexec.args="--project=<project> --location=<location> --repository=<repo> --workspace=<workspace>"
+```
+
+Replace the placeholders (e.g., bv-cdip-431876591-poc, us-east1) with your actual Google Cloud project, location, repository, and workspace values.
+
 The repository is written to a local directory called `out`.
 
-## Building
-The utility is provided in source and leverages Maven for build.  It was tested
-again Java 17.
+
